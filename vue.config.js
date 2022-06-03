@@ -3,4 +3,9 @@ module.exports = defineConfig({
 	transpileDependencies: true,
 	publicPath:
 		process.env.NODE_ENV === "production" ? "/sqlite-crud-editor/" : "/",
+	pwa: {
+		workboxOptions: {
+			skipWaiting: true,
+		},
+	},
 });
