@@ -1,14 +1,14 @@
 const { defineConfig } = require("@vue/cli-service");
-const { PrimeVueResolver } = require("unplugin-vue-components/resolvers");
+// const { PrimeVueResolver } = require("unplugin-vue-components/resolvers");
 module.exports = defineConfig({
 	configureWebpack: {
 		plugins: [
-			require("unplugin-vue-components/webpack")({
-				resolvers: [PrimeVueResolver()],
-				extensions: ["vue"],
-				dts: false,
-				dirs: "",
-			}),
+			// require("unplugin-vue-components/webpack")({
+			// 	resolvers: [PrimeVueResolver()],
+			// 	extensions: ["vue"],
+			// 	dts: false,
+			// 	dirs: "",
+			// }),
 		],
 	},
 	transpileDependencies: true,

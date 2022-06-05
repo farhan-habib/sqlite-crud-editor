@@ -3,15 +3,12 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
 
-import PrimeVue from "primevue/config";
+// import PrimeVue from "primevue/config";
 
-import "primevue/resources/primevue.min.css";
-import "primeicons/primeicons.css";
+// import "primevue/resources/primevue.min.css";
+// import "primeicons/primeicons.css";
 
-import "bootstrap/dist/css/bootstrap-grid.css";
-import "bootstrap";
+// import "bootstrap/dist/css/bootstrap-grid.css";
+// import "bootstrap";
 
-createApp(App)
-	.use(router)
-	.use(PrimeVue, { ripple: true, inputStyle: "outline" })
-	.mount("#app");
+createApp(App).use(router).mount("#app");
