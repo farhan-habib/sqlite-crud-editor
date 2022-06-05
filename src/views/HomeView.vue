@@ -1,5 +1,5 @@
 <script setup></script>
 
-<template>HomePage</template>
+<template><div></div></template>
 
 <style lang="scss"></style>
