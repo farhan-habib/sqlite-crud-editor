@@ -86,9 +86,9 @@ async function onSave() {
 	</div>
 
 
-	<div v-if="content">
+	<div v-if="res.file.value">
 		Content
-		<textarea v-if="typeof content === 'string'" v-model="content" rows="20" cols="40" w-full />
+		<textarea v-if="typeof content === 'string'" v-model="content" w-full />
 		<span v-else>{{ content }}</span>
 	</div>
 
