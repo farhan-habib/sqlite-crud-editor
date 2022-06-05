@@ -20,6 +20,11 @@ const routes = [
 	// 		import(/* webpackChunkName: "about" */ "../views/HomeView.vue"),
 	// },
 	{
+		path: "/test",
+		name: "TestPage",
+		component: () => import("@/views/TestPage.vue"),
+	},
+	{
 		path: "/:catchAll(.*)", // Any unrecognized path will automatically serve the 404 page.
 		name: "Page Not Found",
 		// redirect: "/404",
