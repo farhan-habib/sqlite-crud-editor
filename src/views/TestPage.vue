@@ -2,29 +2,24 @@
 import { useFileSystemAccess } from '@vueuse/core'
 import { reactive, ref } from 'vue'
 
+import initSqlJs from "sql.js";
 
+const SQL = await initSqlJs({
+	// Required to load the wasm binary asynchronously. Of course, you can host it wherever you want
+	// You can omit locateFile completely when running in node
+	locateFile: file => `https://sql.js.org/dist/${file}`
+});
 
-// const res = useFileSystemAccess({
-// 	dataType: 'Blob', // Text, ArrayBuffer, Blob
-// 	types: [{
-// 		description: 'SQLite Database',
-// 		accept: {
-// 			'application/x-sqlite3': [".sqlite"],
-// 		},
-// 	}],
-// 	excludeAcceptAllOption: true,
-// })
 const res = useFileSystemAccess({
-	dataType: 'Text',
+	dataType: 'ArrayBuffer', // Text, ArrayBuffer, Blob
 	types: [{
-		description: 'text',
+		description: 'SQLite Database',
 		accept: {
-			'text/plain': ['.txt', '.html'],
+			'application/x-sqlite3': [".sqlite"],
 		},
 	}],
 	excludeAcceptAllOption: true,
 })
-
 
 const content = res.data //content of the actual file
 const str = (reactive({
@@ -44,13 +39,24 @@ async function onSave() {
 // res.saveAs() // saves the current file as a new file
 
 
+function handleDatabase() {
+	console.log(new Uint8Array(res.data.value));
+	let db = new SQL.Database(new Uint8Array(res.data.value));
+	const stmt = db.prepare("SELECT * FROM 'Album' LIMIT 0,30");
+	while (stmt.step()) { //
+		const row = stmt.getAsObject();
+		console.log('Here is a row: ' + JSON.stringify(row));
+	}
+}
+
+
 </script>
 
 <template>
 	<pre class="code-block" lang="yaml">{{ res }}</pre>
 	<br />
 	<hr /><br />
-
+	<button @click="handleDatabase">Handle Database</button>
 	<div class="flex flex-row justify-between">
 		<div class="inline-flex rounded-md shadow-sm" role="group">
 			<button type="button" @click="res.open()"
@@ -86,11 +92,11 @@ async function onSave() {
 	</div>
 
 
-	<div v-if="res.file.value">
+	<!-- <div v-if="res.file.value">
 		Content
 		<textarea v-if="typeof content === 'string'" v-model="content" w-full />
 		<span v-else>{{ content }}</span>
-	</div>
+	</div> -->
 
 
 </template>

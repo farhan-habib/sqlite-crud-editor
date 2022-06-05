@@ -2,7 +2,9 @@
 
 <template>
 	<div style="margin: 10%; border: 5px solid #1c6ea4">
-		<router-view />
+		<Suspense>
+			<router-view />
+		</Suspense>
 	</div>
 </template>
 
