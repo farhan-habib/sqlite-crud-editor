@@ -2,10 +2,10 @@
 import { useFileSystemAccess } from '@vueuse/core'
 import { reactive, ref } from 'vue'
 
-import initSqlJs from "@/assets/sql.js";
+// import initSqlJs from "@/assets/sql.js";
 
 import { FileSystemAccessHelper } from "@/scripts/FileSystemAccessHelper";
-const SQL = await initSqlJs();
+// const SQL = await initSqlJs();
 
 const content = FileSystemAccessHelper.res.data //content of the actual file
 
@@ -19,15 +19,15 @@ const str = (reactive({
 }))
 
 
-function handleDatabase() {
-	console.log(new Uint8Array(FileSystemAccessHelper.res.data.value));
-	let db = new SQL.Database();
-	const stmt = db.prepare("SELECT * FROM 'Album' LIMIT 0,30");
-	while (stmt.step()) { //
-		const row = stmt.getAsObject();
-		console.log('Here is a row: ' + JSON.stringify(row));
-	}
-}
+// function handleDatabase() {
+// 	console.log(new Uint8Array(FileSystemAccessHelper.res.data.value));
+// 	let db = new SQL.Database();
+// 	const stmt = db.prepare("SELECT * FROM 'Album' LIMIT 0,30");
+// 	while (stmt.step()) { //
+// 		const row = stmt.getAsObject();
+// 		console.log('Here is a row: ' + JSON.stringify(row));
+// 	}
+// }
 
 
 </script>
