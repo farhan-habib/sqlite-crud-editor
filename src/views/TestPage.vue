@@ -1,14 +1,11 @@
 <script setup>
 import { useFileSystemAccess } from '@vueuse/core'
 import { reactive, ref } from 'vue'
-
-// import initSqlJs from "@/assets/sql.js";
-
 import { FileSystemAccessHelper } from "@/scripts/FileSystemAccessHelper";
-// const SQL = await initSqlJs();
-
+import { DatabaseHandler } from '@/scripts/DatabaseHandler';
+const selectedTable = ref(null);
 const content = FileSystemAccessHelper.res.data //content of the actual file
-
+const allTables = ref([]);
 const str = (reactive({
 	isSupported: FileSystemAccessHelper.res.isSupported,
 	file: FileSystemAccessHelper.res.file,
@@ -18,26 +15,21 @@ const str = (reactive({
 	fileLastModified: FileSystemAccessHelper.res.fileLastModified,
 }))
 
-
-// function handleDatabase() {
-// 	console.log(new Uint8Array(FileSystemAccessHelper.res.data.value));
-// 	let db = new SQL.Database();
-// 	const stmt = db.prepare("SELECT * FROM 'Album' LIMIT 0,30");
-// 	while (stmt.step()) { //
-// 		const row = stmt.getAsObject();
-// 		console.log('Here is a row: ' + JSON.stringify(row));
-// 	}
-// }
-
+async function newDatabase() {
+	console.log(selectedTable.value)
+	await FileSystemAccessHelper.openFileChooser();
+	let DbHandler = new DatabaseHandler((new Uint8Array(FileSystemAccessHelper.getData().value)));
+	allTables.value = DbHandler.getAllTables();
+}
 
 </script>
 
 <template>
-	{{ FileSystemAccessHelper.res.file }}
+	{{ allTables }}
 	<div id="buttonFlex">
 		<div class="flex flex-row justify-between">
 			<div class="inline-flex rounded-md shadow-sm" role="group">
-				<button type="button" @click="FileSystemAccessHelper.openFileChooser"
+				<button type="button" @click="newDatabase"
 					class="disabled:border-solid disabled:border-2 disabled:border-sky-500 inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-transparent rounded-l-lg border border-gray-900 hover:bg-gray-900 hover:text-white  dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 ">
 
 					<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -75,7 +67,17 @@ const str = (reactive({
 			<h1>View Database</h1>
 		</pane>
 		<pane size="50">
-			<h1>SQL Commands</h1>
+			<div>
+				<span>SQL Commands</span>
+				{{ selectedTable }}
+				<select id="countries" :disabled="allTables.length == 0" v-model="selectedTable"
+					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+					<option selected disabled class="hidden" value="null">Choose a Table</option>
+
+					<option v-for="(tableName, tableNameIndex) in allTables" :value="tableNameIndex">{{ tableName }}
+					</option>
+				</select>
+			</div>
 		</pane>
 	</splitpanes>
 
