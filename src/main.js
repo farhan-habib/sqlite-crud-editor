@@ -13,4 +13,19 @@ import "flowbite";
 // import "bootstrap/dist/css/bootstrap-grid.css";
 // import "bootstrap";
 
-createApp(App).use(router).mount("#app");
+
+import 'splitpanes/dist/splitpanes.css';
+
+
+
+
+import {Splitpanes, Pane} from "splitpanes"
+createApp(App)
+
+.component("Splitpanes", Splitpanes)
+.component("Pane", Pane)
+
+
+
+
+.use(router).mount("#app");
