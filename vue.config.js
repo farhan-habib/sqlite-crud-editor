@@ -17,6 +17,9 @@ module.exports = defineConfig({
 				"path": require.resolve("path-browserify"),
 				"fs": false,
 			}
+		},
+		experiments:{
+			topLevelAwait: true
 		}
 	},
 	transpileDependencies: true,
