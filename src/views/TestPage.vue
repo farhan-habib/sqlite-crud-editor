@@ -2,13 +2,16 @@
 import { useFileSystemAccess } from '@vueuse/core'
 import { reactive, ref } from 'vue'
 
-import initSqlJs from "sql.js";
+import initSqlJs from "@/assets/sql.js";
 
-const SQL = await initSqlJs({
-	// Required to load the wasm binary asynchronously. Of course, you can host it wherever you want
-	// You can omit locateFile completely when running in node
-	locateFile: file => `https://sql.js.org/dist/${file}`
-});
+
+// const SQL = await initSqlJs({
+// 	// Required to load the wasm binary asynchronously. Of course, you can host it wherever you want
+// 	// You can omit locateFile completely when running in node
+// 	// locateFile: file => { return `https://sql.js.org/dist/${file}` }
+// 	locateFile: file => { return `../assets/sql-wasm.wasm` }
+// });
+const SQL = await initSqlJs();
 
 const res = useFileSystemAccess({
 	dataType: 'ArrayBuffer', // Text, ArrayBuffer, Blob
@@ -53,10 +56,7 @@ function handleDatabase() {
 </script>
 
 <template>
-	<pre class="code-block" lang="yaml">{{ res }}</pre>
-	<br />
-	<hr /><br />
-	<button @click="handleDatabase">Handle Database</button>
+
 	<div class="flex flex-row justify-between">
 		<div class="inline-flex rounded-md shadow-sm" role="group">
 			<button type="button" @click="res.open()"
@@ -92,6 +92,11 @@ function handleDatabase() {
 	</div>
 
 
+	<hr />
+	<button @click="handleDatabase">Handle Database</button>
+	<hr />
+
+	<pre class="code-block" lang="yaml">{{ res }}</pre>
 	<!-- <div v-if="res.file.value">
 		Content
 		<textarea v-if="typeof content === 'string'" v-model="content" w-full />
