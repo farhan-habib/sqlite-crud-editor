@@ -17,10 +17,10 @@ const FileSystemAccessHelper = {
 		}),
 
 	openFileChooser: function() {
-		this.res.open();
+		return this.res.open();
 	},
 	getData: function(){
-		return new Uint8Array(this.res.data.value);
+		return 	this.res.data;
 	},
 	saveAsNew: function(){
 		this.res.saveAs({suggestedName: `UPDATED_${this.res.fileName.value}`});
