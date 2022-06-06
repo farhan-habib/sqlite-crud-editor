@@ -3,9 +3,30 @@ import { useFileSystemAccess } from '@vueuse/core'
 import { reactive, ref } from 'vue'
 import { FileSystemAccessHelper } from "@/scripts/FileSystemAccessHelper";
 import { DatabaseHandler } from '@/scripts/DatabaseHandler';
+let DbHandler;
+
+
 const selectedTable = ref(null);
 const content = FileSystemAccessHelper.res.data //content of the actual file
 const allTables = ref([]);
+const queryInput = ref("");
+
+
+const userTableDisplay = ref();
+
+function newTableSelected(m) {
+	queryInput.value = `SELECT * FROM '${allTables.value[m.target.value]}'`
+}
+
+function executeUserQuery(e) {
+
+
+	if (queryInput.value.length > 0) {
+		userTableDisplay.value = (JSON.stringify(DbHandler.runRawQuery(queryInput.value)));
+	}
+}
+
+
 const str = (reactive({
 	isSupported: FileSystemAccessHelper.res.isSupported,
 	file: FileSystemAccessHelper.res.file,
@@ -16,16 +37,16 @@ const str = (reactive({
 }))
 
 async function newDatabase() {
-	console.log(selectedTable.value)
 	await FileSystemAccessHelper.openFileChooser();
-	let DbHandler = new DatabaseHandler((new Uint8Array(FileSystemAccessHelper.getData().value)));
+
+
+	DbHandler = new DatabaseHandler((new Uint8Array(FileSystemAccessHelper.getData().value)));
 	allTables.value = DbHandler.getAllTables();
 }
 
 </script>
 
 <template>
-	{{ allTables }}
 	<div id="buttonFlex">
 		<div class="flex flex-row justify-between">
 			<div class="inline-flex rounded-md shadow-sm" role="group">
@@ -65,32 +86,30 @@ async function newDatabase() {
 	<splitpanes class="default-theme" vertical>
 		<pane size="50">
 			<h1>View Database</h1>
+			{{ userTableDisplay }}
 		</pane>
 		<pane size="50">
-			<div>
+			<div class="w-full">
 				<span>SQL Commands</span>
-				{{ selectedTable }}
-				<select id="countries" :disabled="allTables.length == 0" v-model="selectedTable"
+				<select :disabled="allTables.length == 0" v-model="selectedTable" @input="newTableSelected"
 					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
 					<option selected disabled class="hidden" value="null">Choose a Table</option>
-
 					<option v-for="(tableName, tableNameIndex) in allTables" :value="tableNameIndex">{{ tableName }}
 					</option>
 				</select>
+
+				<div>
+					<input type="text" v-model="queryInput"
+						class="w-8/12 text-gray-900 bg-gray-50 rounded-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white ">
+					<button type="button" @click="executeUserQuery"
+						class="py-2.5 px-5 text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+						Execute Query</button>
+				</div>
+
+
 			</div>
 		</pane>
 	</splitpanes>
-
-	<hr />
-	<button @click="handleDatabase">Handle Database</button>
-	<hr />
-
-	<pre class="code-block" lang="yaml">{{ FileSystemAccessHelper.res }}</pre>
-	<!-- <div v-if="res.file.value">
-		Content
-		<textarea v-if="typeof content === 'string'" v-model="content" w-full />
-		<span v-else>{{ content }}</span>
-	</div> -->
 
 
 </template>
