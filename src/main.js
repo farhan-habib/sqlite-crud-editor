@@ -16,6 +16,8 @@ import "flowbite";
 
 import 'splitpanes/dist/splitpanes.css';
 
+import Vue3EasyDataTable from 'vue3-easy-data-table';
+import 'vue3-easy-data-table/dist/style.css';
 
 
 
@@ -24,7 +26,7 @@ createApp(App)
 
 .component("Splitpanes", Splitpanes)
 .component("Pane", Pane)
-
+.component('EasyDataTable', Vue3EasyDataTable)
 
 
 
