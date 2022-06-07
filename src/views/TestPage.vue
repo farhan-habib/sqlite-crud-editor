@@ -25,11 +25,18 @@ function executeUserQuery(e) {
 	// }
 	const dbOutput = DbHandler.runRawQuery(userSQLQuery.value)[0];
 	let output = [];
-	for (const row in dbOutput.values) {
-		console.log("here");
-		output.push(Object.fromEntries(dbOutput.columns.map((_, i) => [dbOutput.columns[i], row[i]])));
+	userTableDisplay.value.columns = dbOutput.columns.map(m => { return { text: m, value: m, sortable: true } },);
+
+	for (let i = 0; i < dbOutput.values.length; i++) {
+		let row = {};
+		for (let j = 0; j < dbOutput.columns.length; j++) {
+			row[dbOutput.columns[j]] = dbOutput.values[i][j];
+		}
+
+		output.push(row);
 	}
-	userTableDisplay.value.columns = dbOutput.columns.map(m => { return { text: m, value: m } },);
+
+
 	userTableDisplay.value.rows = output;
 	console.log(userTableDisplay.value)
 }
@@ -93,9 +100,11 @@ async function newDatabase() {
 
 	<splitpanes class="default-theme" vertical>
 		<pane size="50">
-			<h1>View Database</h1>
-			<!-- {{ userTableDisplay }} -->
-			<EasyDataTable :headers="userTableDisplay.columns" :items="userTableDisplay.rows" />
+			<div class="w-full">
+				<h1>View Database</h1>
+				<!-- {{ userTableDisplay }} -->
+				<EasyDataTable :headers="userTableDisplay.columns" :items="userTableDisplay.rows" />
+			</div>
 		</pane>
 		<pane size="50">
 			<div class="w-full">
@@ -123,7 +132,7 @@ async function newDatabase() {
 
 
 </template>
-<style lang="scss">
+<style lang="postcss">
 :disabled {
 	@apply border-solid border-2 border-sky-500
 }
