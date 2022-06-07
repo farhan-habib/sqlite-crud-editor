@@ -8,23 +8,30 @@ let DbHandler;
 const allTables = ref([]); //the list of all tables in the database
 const userSQLQuery = ref(""); //the SQL query that the user wants to run on the database
 
+let userTableDisplay = ref({ columns: [], rows: [] });
 const content = FileSystemAccessHelper.res.data //content of the actual file
 
 
 
 
-const userTableDisplay = ref();
 
 function newTableSelected(m) {
 	userSQLQuery.value = `SELECT * FROM '${allTables.value[m.target.value]}'`
 }
 
 function executeUserQuery(e) {
-
-
-	if (userSQLQuery.value.length > 0) {
-		userTableDisplay.value = (JSON.stringify(DbHandler.runRawQuery(userSQLQuery.value)));
+	// if (userSQLQuery.value.length > 0) {
+	// 	userTableDisplay.value = (JSON.stringify(DbHandler.runRawQuery(userSQLQuery.value)));
+	// }
+	const dbOutput = DbHandler.runRawQuery(userSQLQuery.value)[0];
+	let output = [];
+	for (const row in dbOutput.values) {
+		console.log("here");
+		output.push(Object.fromEntries(dbOutput.columns.map((_, i) => [dbOutput.columns[i], row[i]])));
 	}
+	userTableDisplay.value.columns = dbOutput.columns.map(m => { return { text: m, value: m } },);
+	userTableDisplay.value.rows = output;
+	console.log(userTableDisplay.value)
 }
 
 
@@ -88,7 +95,7 @@ async function newDatabase() {
 		<pane size="50">
 			<h1>View Database</h1>
 			<!-- {{ userTableDisplay }} -->
-
+			<EasyDataTable :headers="userTableDisplay.columns" :items="userTableDisplay.rows" />
 		</pane>
 		<pane size="50">
 			<div class="w-full">
