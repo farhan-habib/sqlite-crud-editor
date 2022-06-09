@@ -98,15 +98,9 @@ async function newDatabase() {
 		</div>
 	</div>
 
-	<splitpanes class="default-theme" vertical>
-		<pane size="50">
-			<div class="w-full">
-				<h1>View Database</h1>
-				<!-- {{ userTableDisplay }} -->
-				<EasyDataTable :headers="userTableDisplay.columns" :items="userTableDisplay.rows" />
-			</div>
-		</pane>
-		<pane size="50">
+	<splitpanes class="h-full splitPaneTheme" horizontal>
+
+		<pane size="1">
 			<div class="w-full">
 				<span>SQL Commands</span>
 				<select :disabled="allTables.length == 0" @input="newTableSelected"
@@ -126,6 +120,13 @@ async function newDatabase() {
 				</div>
 
 
+			</div>
+		</pane>
+		<pane size="50">
+			<div class="w-full">
+				<h1>View Database</h1>
+				<!-- {{ userTableDisplay }} -->
+				<EasyDataTable :headers="userTableDisplay.columns" :items="userTableDisplay.rows" />
 			</div>
 		</pane>
 	</splitpanes>

@@ -1,8 +1,13 @@
+html {
+	height: 100%;
+}
 body {
 	height: 100%;
 	overflow-x: hidden;
 	overflow-y: auto;
 	font-weight: 400;
 }
-
+#app {
+	height: 100%;
+}
 @import "./splitPlane.scss";

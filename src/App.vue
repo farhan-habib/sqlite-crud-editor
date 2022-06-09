@@ -2,6 +2,7 @@
 
 <template>
 	<!-- <div style="margin: 10%; border: 5px solid #1c6ea4"> -->
+
 	<Suspense>
 		<router-view />
 	</Suspense>
