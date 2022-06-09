@@ -64,7 +64,7 @@ async function newDatabase() {
 <template>
 	<div id="buttonFlex">
 		<div class="flex flex-row justify-between">
-			<div class="inline-flex rounded-md shadow-sm" role="group">
+			<div id="fileUpDwn" class="inline-flex rounded-md shadow-sm" role="group">
 				<button type="button" @click="newDatabase"
 					class=" inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-transparent rounded-l-lg border border-gray-900 hover:bg-gray-900 hover:text-white  dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 ">
 
@@ -85,7 +85,19 @@ async function newDatabase() {
 				</button>
 			</div>
 
-			<div class="inline-flex rounded-md shadow-sm" role="group">
+			<div id="dbManipulation" class="inline-flex rounded-md shadow-sm" role="group">
+				<button type="button" @click="executeUserQuery" :disabled="content == undefined"
+					class="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-transparent rounded-r-md rounded-l-lg border border-gray-900 hover:bg-gray-900 hover:text-white  dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700">
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+						<path fill-rule="evenodd"
+							d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+							clip-rule="evenodd" />
+					</svg>
+					Run Command
+				</button>
+			</div>
+
+			<div id="fileSaveLocal" class="inline-flex rounded-md shadow-sm" role="group">
 				<button type="button" @click="FileSystemAccessHelper.updateLocal" :disabled="content == undefined"
 					class="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-transparent rounded-r-md rounded-l-lg border border-gray-900 hover:bg-gray-900 hover:text-white  dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700">
 					<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -98,11 +110,10 @@ async function newDatabase() {
 		</div>
 	</div>
 
-	<splitpanes class="h-full splitPaneTheme" horizontal>
+	<splitpanes id="contentPane" class="splitPaneTheme" horizontal>
 
-		<pane size="1">
+		<pane>
 			<div class="w-full">
-				<span>SQL Commands</span>
 				<select :disabled="allTables.length == 0" @input="newTableSelected"
 					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
 					<option selected disabled class="hidden" value="null">Choose a Table</option>
@@ -114,17 +125,16 @@ async function newDatabase() {
 					<input type="text" v-model="userSQLQuery" :disabled="content == undefined"
 						placeholder="Input Your Query Here"
 						class="w-8/12 text-gray-900 bg-gray-50 rounded-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white ">
-					<button type="button" @click="executeUserQuery" :disabled="content == undefined"
+					<!-- <button type="button" @click="executeUserQuery" :disabled="content == undefined"
 						class="py-2.5 px-5 text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-						Execute Query</button>
+						Execute Query</button> -->
 				</div>
 
 
 			</div>
 		</pane>
-		<pane size="50">
+		<pane>
 			<div class="w-full">
-				<h1>View Database</h1>
 				<!-- {{ userTableDisplay }} -->
 				<EasyDataTable :headers="userTableDisplay.columns" :items="userTableDisplay.rows" />
 			</div>
@@ -134,6 +144,10 @@ async function newDatabase() {
 
 </template>
 <style lang="postcss">
+#contentPane {
+	@apply h-auto
+}
+
 :disabled {
 	@apply border-solid border-2 border-sky-500
 }
