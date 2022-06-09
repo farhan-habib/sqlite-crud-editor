@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunksqlite_crud_editor"]=self["webpackChunksqlite_crud_editor"]||[]).push([[78],{1078:function(t,e,r){r.r(e),r.d(e,{default:function(){return o}});var u=r(3396);const n=(0,u.Uk)("CLICK HERE TO GO TO TEST PAGE");var s={name:"HomeView",setup(t){return(t,e)=>{const r=(0,u.up)("router-link");return(0,u.wg)(),(0,u.j4)(r,{to:"/test"},{default:(0,u.w5)((()=>[n])),_:1})}}};const c=s;var o=c}}]);
+//# sourceMappingURL=78.1b7d37e8.js.map
