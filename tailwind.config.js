@@ -5,6 +5,10 @@ module.exports = {
 	theme: {
 		extend: {},
 	},
-	content: ["./node_modules/flowbite/**/*.js"],
+	content: [
+		// "./node_modules/flowbite/**/*.js"
+		"./index.html",
+		"./src/**/*.{vue,js,ts,jsx,tsx}",
+	],
 	plugins: [require("flowbite/plugin")],
 };
